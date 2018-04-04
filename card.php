@@ -31,6 +31,35 @@ Class Bs_card {
 		$this->heeft_link = $this->geen_lege_eigenschap('link');
 	}
 
+	public function samenvatting() {
+
+		if (property_exists($this->post, 'post_excerpt') and $this->post->post_excerpt !== "") {
+			return $this->post->post_excerpt;
+		} else {
+
+			$charlength = 100;
+			$r = "";
+
+			if ( mb_strlen( $this->post->post_content ) > $charlength ) {
+				$subex = mb_substr( $this->post->post_content, 0, $charlength - 3 );
+				$exwords = explode( ' ', $subex );
+				$excut = - ( mb_strlen( $exwords[ count( $exwords ) - 1 ] ) );
+				if ( $excut < 0 ) {
+					$r.= mb_substr( $subex, 0, $excut );
+				} else {
+					$r.= $subex;
+				}
+				$r = rtrim($r);
+				$r.= '...';
+
+				return $r;
+			} else {
+				return $this->post->post_content;
+			}
+		}
+
+	}
+
 	private function open_link($echo = false) {
 
 		// open en sluit link staan op meerdere plekken in de class zodat er tussendoor
@@ -109,7 +138,7 @@ Class Bs_card {
 		if ($this->geen_lege_eigenschap('tekst')) {
 			echo apply_filters('the_content', $this->tekst);
 		} else if ($this->geen_lege_eigenschap('post')) {
-			$this->tekst = $this->post->post_content;
+			$this->tekst = $this->samenvatting();
 			echo apply_filters('the_content', $this->tekst);
 		}
 	}
