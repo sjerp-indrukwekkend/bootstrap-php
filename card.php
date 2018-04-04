@@ -155,7 +155,7 @@ Class Bs_card {
 		if ($this->geen_lege_eigenschap('knop_tekst')) {?>
 
 			<footer class="row">
-				<div class="col pt-2 text-center">
+				<div class="col pt-2">
 				    <?=$this->open_link()?>
 				    	<span class="<?=$this->knop_class()?>">
 				    		<?=$this->knop_tekst?>
